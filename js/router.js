@@ -105,23 +105,6 @@ function RenderGalleryPage() {
         imageGrid.appendChild(img);
     });
 
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                loadImageAsBlob(img.dataset.src).then(blobUrl => {
-                    img.src = blobUrl;
-                });
-                observer.unobserve(img);
-            }
-        });
-    });
-
-    document.querySelectorAll('#imageGrid img').forEach(img => {
-        observer.observe(img);
-    });
-
-
     imageGrid.addEventListener('click', function(e) {
         if (e.target.tagName === 'IMG') {
             modalImage.src = e.target.src;
@@ -140,12 +123,6 @@ function RenderGalleryPage() {
             modalImage.src = '';
         }
     });
-}
-
-async function loadImageAsBlob(url) {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
 }
 
 function popStateHandler() {
