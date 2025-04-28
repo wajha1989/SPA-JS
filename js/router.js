@@ -99,9 +99,8 @@ function RenderGalleryPage() {
 
     imageUrls.forEach((url, index) => {
         const img = document.createElement('img');
-        img.dataset.src = url;
-        img.alt = `Image ${index + 1}`;
         img.loading = "lazy";
+        img.src = url;
         imageGrid.appendChild(img);
     });
 
