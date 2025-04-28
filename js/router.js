@@ -1,7 +1,20 @@
 let pageUrls = {
     about: '/index.html?about',
-    contact: '/index.html?contact'
+    contact: '/index.html?contact',
+    gallery: '/index.html?gallery'
 }
+
+const imageUrls = [
+    '../images/vance1.webp',
+    '../images/vance2.jfif',
+    '../images/vance3.jfif',
+    '../images/vance4.jfif',
+    '../images/vance5.jfif',
+    '../images/vance6.jfif',
+    '../images/vance7.jpeg',
+    '../images/vance8.webp',
+    '../images/vance9.jpeg'
+];
 
 function OnStartUp() {
     popStateHandler();
@@ -23,42 +36,41 @@ document.querySelector('#contact-link').addEventListener('click', (event) => {
     RenderContactPage();
 });
 
-document.getElementById('theme-toggle').addEventListener('click', (event) => {
-   document.body.classList.toggle('dark-mode');
-   console.log("dark mode changed");
+document.querySelector('#gallery-link').addEventListener('click', (event) => {
+    let stateObj = {page: 'contact'};
+    document.title = "Gallery";
+    history.pushState(stateObj, "gallery", "?gallery");
+    RenderGalleryPage();
 });
 
-function RenderAboutPage(){
-    fetch('about.html')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(html => {
-            document.querySelector('main').innerHTML = html;
-        })
-        .catch(error => {
-            console.error('Error fetching the HTML file:', error);
-        });
+document.getElementById('theme-toggle').addEventListener('click', (event) => {
+    document.body.classList.toggle('dark-mode');
+    console.log("dark mode changed");
+});
+
+function RenderAboutPage() {
+    document.querySelector('main').innerHTML = `
+            <h1 class="title">About Me</h1>
+            <p>This is now about me main text, Lorem Ipsum</p>
+            `
 }
 
-function RenderContactPage(){
-    fetch('contact.html')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(html => {
-            document.querySelector('main').innerHTML = html;
-        })
-        .catch(error => {
-            console.error('Error fetching the HTML file:', error);
-        });
-
+function RenderContactPage() {
+    document.querySelector('main').innerHTML =
+        `
+        <h1 class="title">Contact with me</h1>
+        <div class="container">
+        <form id="contact-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+        <button type="submit">Send</button>
+        </form>
+        </div>
+        `
     document.getElementById('contact-form').addEventListener('submit', (event) => {
         event.preventDefault();
         alert('Form submitted!');
@@ -66,12 +78,86 @@ function RenderContactPage(){
     })
 }
 
-function popStateHandler(){
+function RenderGalleryPage() {
+    document.querySelector('main').innerHTML = `
+    <div class="grid" id="imageGrid">
+    
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content" id="modalContent">
+            <span class="close-btn" id="closeBtn">close</span>
+            <img src="" alt="Full Image" id="modalImage">
+        </div>
+    </div>
+            `
+
+    const imageGrid = document.getElementById('imageGrid');
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modalImage');
+    const closeBtn = document.getElementById('closeBtn');
+
+    imageUrls.forEach((url, index) => {
+        const img = document.createElement('img');
+        img.dataset.src = url;
+        img.alt = `Image ${index + 1}`;
+        img.loading = "lazy";
+        imageGrid.appendChild(img);
+    });
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                loadImageAsBlob(img.dataset.src).then(blobUrl => {
+                    img.src = blobUrl;
+                });
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    document.querySelectorAll('#imageGrid img').forEach(img => {
+        observer.observe(img);
+    });
+
+
+    imageGrid.addEventListener('click', function(e) {
+        if (e.target.tagName === 'IMG') {
+            modalImage.src = e.target.src;
+            modal.style.display = 'flex';
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        modalImage.src = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            modalImage.src = '';
+        }
+    });
+}
+
+async function loadImageAsBlob(url) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+}
+
+function popStateHandler() {
     let loc = window.location.href.toString().split(window.location.host)[1];
     console.log(window.location.href.toString().split(window.location.host)[1])
 
-    if (loc === pageUrls.about) {RenderAboutPage();}
-    if (loc === pageUrls.contact) {RenderContactPage();}
+    if (loc === pageUrls.about) {
+        RenderAboutPage();
+    }
+    if (loc === pageUrls.contact) {
+        RenderContactPage();
+    }
 }
 
-window.onpopstaet = popStateHandler;
+window.onpopstate = popStateHandler;
