@@ -157,7 +157,7 @@ function popStateHandler() {
     if (loc === pageUrls.contact) {
         RenderContactPage();
     }
-    if (loc === pagesUrls.gallery) {
+    if (loc === pageUrls.gallery){
         RenderGalleryPage();
     }
 }
