@@ -149,7 +149,7 @@ function RenderGalleryPage() {
 
 function popStateHandler() {
     let loc = window.location.href.toString().split(window.location.host)[1];
-    console.log(window.location.href.toString().split(window.location.host)[1])
+    console.log(loc)
 
     if (loc === pageUrls.about) {
         RenderAboutPage();
