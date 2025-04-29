@@ -16,6 +16,10 @@ const imageUrls = [
     'images/vance9.jpeg'
 ];
 
+var onloadCallback = function(){
+    console.log("recaptcha ready")
+};
+
 function OnStartUp() {
     console.log("startup")
     popStateHandler();
@@ -62,6 +66,7 @@ function RenderContactPage() {
         <h1 class="title">Contact with me</h1>
         <div class="container">
         <form id="contact-form">
+        <div id="recaptcha-container"></div>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
         <label for="email">Email:</label>
@@ -75,8 +80,23 @@ function RenderContactPage() {
     document.getElementById('contact-form').addEventListener('submit', (event) => {
         event.preventDefault();
         alert('Form submitted!');
+        const token = grecaptcha.getResponse(); // Get the CAPTCHA token
 
+        if (!token) {
+            alert('Please complete the CAPTCHA before submitting.');
+            return;
+        }
     })
+    setTimeout(() => {
+        console.log(typeof grecaptcha)
+        if (typeof grecaptcha !== 'undefined') {
+            grecaptcha.render('recaptcha-container', {
+                'sitekey': '6LdOtCcrAAAAAO-FTDGt7k3BuFh5OTzYUXxOkQeF'
+            });
+        } else {
+            console.error('reCAPTCHA API not loaded yet.');
+        }
+    }, 100)
 }
 
 function RenderGalleryPage() {
