@@ -5,15 +5,15 @@ let pageUrls = {
 }
 
 const imageUrls = [
-    'images/vance1.webp',
-    'images/vance2.jfif',
-    'images/vance3.jfif',
-    'images/vance4.jfif',
-    'images/vance5.jfif',
-    'images/vance6.jfif',
-    'images/vance7.jpeg',
-    'images/vance8.webp',
-    'images/vance9.jpeg'
+    '/images/vance1.webp',
+    '/images/vance2.jfif',
+    '/images/vance3.jfif',
+    '/images/vance4.jfif',
+    '/images/vance5.jfif',
+    '/images/vance6.jfif',
+    '/images/vance7.jpeg',
+    '/images/vance8.webp',
+    '/images/vance9.jpeg'
 ];
 
 var onloadCallback = function(){
