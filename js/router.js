@@ -17,6 +17,7 @@ const imageUrls = [
 ];
 
 function OnStartUp() {
+    console.log("startup")
     popStateHandler();
 }
 
