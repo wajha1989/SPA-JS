@@ -11,6 +11,9 @@ header {
     justify-content: space-around;
     align-items: center;
 }
+.form-color{
+    color: black
+}
 .Header-links-ul {
     width: 60%;
     list-style: none;

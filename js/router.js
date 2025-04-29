@@ -1,7 +1,7 @@
 let pageUrls = {
-    about: '/index.html?about',
-    contact: '/index.html?contact',
-    gallery: '/index.html?gallery'
+    about: '/?about',
+    contact: '/?contact',
+    gallery: '/?gallery'
 }
 
 const imageUrls = [
@@ -67,11 +67,11 @@ function RenderContactPage() {
         <div class="container">
         <form id="contact-form">
         <div id="recaptcha-container"></div>
-        <label for="name">Name:</label>
+        <label class ="form-color" for="name">Name:</label>
         <input type="text" id="name" name="name" required>
-        <label for="email">Email:</label>
+        <label class ="form-color" for="email">Email:</label>
         <input type="email" id="email" name="email" required>
-        <label for="message">Message:</label>
+        <label class ="form-color" for="message">Message:</label>
         <textarea id="message" name="message" required></textarea>
         <button type="submit">Send</button>
         </form>
@@ -101,10 +101,12 @@ function RenderContactPage() {
 
 function RenderGalleryPage() {
     document.querySelector('main').innerHTML = `
-    <div class="grid" id="imageGrid">
+    <div class = "container">
+        <div class="grid" id="imageGrid">
     
+        </div>
     </div>
-
+    
     <div class="modal" id="modal">
         <div class="modal-content" id="modalContent">
             <span class="close-btn" id="closeBtn">close</span>
